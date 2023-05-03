@@ -1,0 +1,55 @@
+# {network, subnetmask, host[]}로 구성된 subnet_info 반환
+def get_subnetinfo():
+    host = []
+    subnet_info = {} #{network, subnetmask, host[]}
+
+    subnet_info["network"] = input("Input Network Address : ") #network 입력 string
+    subnet_info["subnetmask"] = input("Input Subnet Mask : ") #subnetmask 입력 int
+    subnet_num = int(input("How many subnets : "))#int 타입의 subnet 개수
+    
+    for i in range(subnet_num):
+        host_num = int(input("Subnet"+ str(i+1) +" : How many hosts : "))
+        host.append(host_num)
+    
+    host = sorted(host, reverse=True)
+    subnet_info["host"] = host #host 정보가 들어가 있는 int 배열
+
+
+    return subnet_info
+
+
+
+def cal_subnet(subnet_info):
+    ID = 0 #last host의 ID 저장용
+    broad = 1 #broadcast 저장용
+    network_split = subnet_info["network"].split(".")
+    print("          ==== Subnet Calculation Result by NamyoungCho ====\n")
+    print("Subnet  Network ID   Subnet Mask       Range      Broadcast")
+    for host in subnet_info["host"]:
+        bi = 1 #host 비교용
+        subnet = 1#번호
+        
+        for bit in range(32):#최대비트수 32
+            if host >= bi: #host가 2진수 bi 보다 크다면 bi*2
+                broad = broad + bi
+                bi *=2
+
+            elif host < bi: #host가 bi보다 작다면 break 현재 subnetmask를 subnet_mask에 저장
+                subnet_mask = 32-bit
+                break
+
+            if subnet_mask >= 24:
+                network = network_split[0]+"." + network_split[1] + "." + network_split[2] +"."
+                network_ID = network + ID 
+                broadcast = network + broad
+                rng = network+(ID+1)+"-"+network+(broad-1)
+
+                print(subnet + network_ID + subnet_mask + rng + broadcast)
+
+        
+
+
+
+if __name__ ==  "__main__":
+    subnet_info = get_subnetinfo()
+    cal_subnet(subnet_info)
